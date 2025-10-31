@@ -54,20 +54,6 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
       ctx.stroke();
     }
 
-    // Draw score marks on tree trunk
-    const maxMarksVisible = Math.min(gameState.score, 30);
-    ctx.strokeStyle = '#FFD700';
-    ctx.lineWidth = 3;
-    for (let i = 0; i < maxMarksVisible; i++) {
-      const markY = height - 100 - (i * 15) - 10;
-      if (markY > height - 100 - treeHeight) {
-        ctx.beginPath();
-        ctx.moveTo(treeX - treeWidth / 2 + 10, markY);
-        ctx.lineTo(treeX + treeWidth / 2 - 10, markY);
-        ctx.stroke();
-      }
-    }
-
     // Draw branches
     gameState.branches.forEach(branch => {
       const branchY = height - 100 - (branch.position * 60) - 60;
