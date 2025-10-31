@@ -10,32 +10,34 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { saveScore } from '@/lib/storage';
 
 interface GameOverDialogProps {
   open: boolean;
   score: number;
   onRestart: () => void;
-  onSaveScore: (playerName: string) => Promise<void>;
 }
 
-export const GameOverDialog = ({ open, score, onRestart, onSaveScore }: GameOverDialogProps) => {
+export const GameOverDialog = ({ open, score, onRestart }: GameOverDialogProps) => {
   const [playerName, setPlayerName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const { t } = useLanguage();
 
   const handleSave = async () => {
     if (!playerName.trim()) {
-      toast.error('Please enter your name');
+      toast.error(t.enterNameError);
       return;
     }
 
     setIsSaving(true);
     try {
-      await onSaveScore(playerName.trim());
-      toast.success('Score saved to leaderboard!');
+      saveScore(playerName.trim(), score);
+      toast.success(t.scoreSaved);
       setPlayerName('');
       onRestart();
     } catch (error) {
-      toast.error('Failed to save score');
+      toast.error(t.failedToSave);
     } finally {
       setIsSaving(false);
     }
@@ -45,17 +47,17 @@ export const GameOverDialog = ({ open, score, onRestart, onSaveScore }: GameOver
     <Dialog open={open}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-3xl font-bold text-destructive">Game Over!</DialogTitle>
+          <DialogTitle className="text-3xl font-bold text-destructive">{t.gameOver}</DialogTitle>
           <DialogDescription className="text-lg">
-            You chopped <span className="font-bold text-primary">{score}</span> pieces of wood!
+            {t.youChopped} <span className="font-bold text-primary">{score}</span> {t.piecesOfWood}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="playerName">Enter your name for the leaderboard</Label>
+            <Label htmlFor="playerName">{t.enterName}</Label>
             <Input
               id="playerName"
-              placeholder="Your name"
+              placeholder={t.yourName}
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSave()}
@@ -64,10 +66,10 @@ export const GameOverDialog = ({ open, score, onRestart, onSaveScore }: GameOver
           </div>
           <div className="flex gap-2">
             <Button onClick={handleSave} disabled={isSaving} className="flex-1">
-              {isSaving ? 'Saving...' : 'Save & Restart'}
+              {isSaving ? t.saving : t.saveRestart}
             </Button>
             <Button onClick={onRestart} variant="outline" className="flex-1">
-              Restart
+              {t.restart}
             </Button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GameState } from '@/hooks/useGameLogic';
+import { useSkin } from '@/contexts/SkinContext';
 
 interface GameCanvasProps {
   gameState: GameState;
@@ -7,6 +8,7 @@ interface GameCanvasProps {
 
 export const GameCanvas = ({ gameState }: GameCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { skinColors } = useSkin();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -101,28 +103,28 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
     const playerY = height - 100 - 60;
 
     // Player body
-    ctx.fillStyle = '#D32F2F';
+    ctx.fillStyle = skinColors.body;
     ctx.fillRect(playerX - 20, playerY, 40, 50);
 
     // Player head
-    ctx.fillStyle = '#FFD4A3';
+    ctx.fillStyle = skinColors.head;
     ctx.beginPath();
     ctx.arc(playerX, playerY - 10, 20, 0, Math.PI * 2);
     ctx.fill();
 
     // Player hat
-    ctx.fillStyle = '#6B4423';
+    ctx.fillStyle = skinColors.hat;
     ctx.fillRect(playerX - 22, playerY - 20, 44, 10);
     ctx.fillRect(playerX - 15, playerY - 30, 30, 10);
 
     // Player beard
-    ctx.fillStyle = '#8B6239';
+    ctx.fillStyle = skinColors.beard;
     ctx.beginPath();
     ctx.arc(playerX, playerY, 12, 0, Math.PI);
     ctx.fill();
 
     // Axe
-    ctx.strokeStyle = '#6B4423';
+    ctx.strokeStyle = skinColors.axeHandle;
     ctx.lineWidth = 4;
     ctx.beginPath();
     if (gameState.playerSide === 'left') {
@@ -135,14 +137,14 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
     ctx.stroke();
 
     // Axe head
-    ctx.fillStyle = '#808080';
+    ctx.fillStyle = skinColors.axeHead;
     if (gameState.playerSide === 'left') {
       ctx.fillRect(playerX + 38, playerY - 8, 15, 16);
     } else {
       ctx.fillRect(playerX - 53, playerY - 8, 15, 16);
     }
 
-  }, [gameState]);
+  }, [gameState, skinColors]);
 
   return (
     <canvas

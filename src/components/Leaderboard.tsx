@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy, Medal } from 'lucide-react';
-
-interface Score {
-  id: number;
-  player_name: string;
-  score: number;
-  created_at: string;
-}
+import { getTopScores, StoredScore } from '@/lib/storage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Leaderboard = () => {
-  const [scores, setScores] = useState<Score[]>([]);
+  const [scores, setScores] = useState<StoredScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
-    // We'll implement this once Lovable Cloud is enabled
+    setScores(getTopScores());
     setIsLoading(false);
   }, []);
 
@@ -30,15 +26,15 @@ export const Leaderboard = () => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold flex items-center gap-2">
           <Trophy className="w-6 h-6 text-accent" />
-          Top Lumberjacks
+          {t.topLumberjacks}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <p className="text-center text-muted-foreground">Loading...</p>
+          <p className="text-center text-muted-foreground">{t.loading}</p>
         ) : scores.length === 0 ? (
           <p className="text-center text-muted-foreground py-4">
-            No scores yet. Be the first to play!
+            {t.noScores}
           </p>
         ) : (
           <div className="space-y-2">

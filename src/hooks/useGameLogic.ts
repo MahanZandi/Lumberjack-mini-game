@@ -59,12 +59,12 @@ export const useGameLogic = () => {
     });
   }, []);
 
-  const switchSide = useCallback(() => {
+  const moveTo = useCallback((side: 'left' | 'right') => {
     if (gameState.isGameOver || gameState.isPaused) return;
     
     setGameState(prev => ({
       ...prev,
-      playerSide: prev.playerSide === 'left' ? 'right' : 'left',
+      playerSide: side,
     }));
   }, [gameState.isGameOver, gameState.isPaused]);
 
@@ -108,9 +108,13 @@ export const useGameLogic = () => {
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        switchSide();
+        moveTo('left');
+        chop();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        moveTo('right');
         chop();
       } else if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
@@ -120,12 +124,12 @@ export const useGameLogic = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [switchSide, chop]);
+  }, [moveTo, chop]);
 
   return {
     gameState,
     initGame,
-    switchSide,
+    moveTo,
     chop,
   };
 };
