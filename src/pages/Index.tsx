@@ -12,36 +12,28 @@ const Index = () => {
   const { t, language, setLanguage } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-game-sky-start to-game-sky-end flex flex-col items-center justify-center p-4 gap-6">
-      <header className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-2 flex-wrap">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLanguage(language === 'en' ? 'fa' : 'en')}
-          >
-            <Languages className="w-4 h-4 mr-2" />
-            {language === 'en' ? 'فارسی' : 'English'}
+    <div className="min-h-screen bg-gradient-to-b from-game-sky-start to-game-sky-end flex flex-col items-center justify-center p-2 sm:p-4 gap-2 sm:gap-6">
+      <header className="flex items-center justify-center gap-2 flex-wrap">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setLanguage(language === 'en' ? 'fa' : 'en')}
+        >
+          <Languages className="w-4 h-4 mr-2" />
+          {language === 'en' ? 'فارسی' : 'English'}
+        </Button>
+        <Link to="/dashboard">
+          <Button variant="outline" size="sm">
+            <Trophy className="w-4 h-4 mr-2" />
+            {t.records}
           </Button>
-          <Link to="/dashboard">
-            <Button variant="outline" size="sm">
-              <Trophy className="w-4 h-4 mr-2" />
-              {t.records}
-            </Button>
-          </Link>
-        </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary drop-shadow-lg">
-          {t.title}
-        </h1>
-        <p className="text-base sm:text-lg text-foreground/80 px-4">
-          {t.subtitle}
-        </p>
+        </Link>
       </header>
 
-      <main className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-6xl">
-        <div className="flex-1 flex flex-col items-center gap-4 w-full">
+      <main className="flex flex-col lg:flex-row items-start gap-2 sm:gap-6 w-full lg:max-w-6xl flex-1">
+        <div className="flex-1 flex flex-col items-center gap-2 sm:gap-4 w-full">
           {gameState.isPaused ? (
-            <div className="w-full max-w-[800px] aspect-[4/3] border-4 border-secondary rounded-lg shadow-2xl bg-gradient-to-b from-game-sky-start to-game-sky-end flex items-center justify-center">
+            <div className="w-full aspect-[3/4] sm:aspect-[4/3] sm:max-w-[800px] border-4 border-secondary rounded-lg shadow-2xl bg-gradient-to-b from-game-sky-start to-game-sky-end flex items-center justify-center">
               <div className="text-center space-y-4 p-4">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">{t.readyToChop}</h2>
                 <p className="text-lg sm:text-xl text-foreground/80">{t.avoidBranches}</p>
@@ -53,7 +45,7 @@ const Index = () => {
             </div>
           ) : (
             <div 
-              className="relative w-full max-w-[800px] aspect-[4/3] cursor-pointer"
+              className="relative w-full aspect-[3/4] sm:aspect-[4/3] sm:max-w-[800px] cursor-pointer"
               onClick={(e) => {
                 if (gameState.isGameOver) return;
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -68,15 +60,20 @@ const Index = () => {
           )}
 
           {!gameState.isPaused && (
-            <div className="bg-card px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg border-4 border-secondary">
-              <p className="text-2xl sm:text-3xl font-bold text-primary text-center">
-                {t.score}: {gameState.score}
+            <div className="text-center space-y-1">
+              <div className="bg-card px-6 sm:px-8 py-2 sm:py-4 rounded-xl shadow-lg border-4 border-secondary">
+                <p className="text-xl sm:text-3xl font-bold text-primary">
+                  {t.score}: {gameState.score}
+                </p>
+              </div>
+              <p className="text-xs sm:text-sm text-foreground/70 px-4">
+                {t.tapToPlay}
               </p>
             </div>
           )}
         </div>
 
-        <aside className="w-full lg:w-auto">
+        <aside className="w-full lg:w-auto hidden lg:block">
           <Leaderboard />
         </aside>
       </main>
