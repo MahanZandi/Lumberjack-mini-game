@@ -12,6 +12,7 @@ interface Translations {
   chopLeft: string;
   chopRight: string;
   keyboardTip: string;
+  tapToPlay: string;
   gameOver: string;
   youChopped: string;
   piecesOfWood: string;
@@ -46,6 +47,7 @@ const translations: Record<Language, Translations> = {
     chopLeft: 'Chop Left',
     chopRight: 'Chop Right',
     keyboardTip: 'Tip: Press arrow keys on keyboard for faster gameplay!',
+    tapToPlay: 'Tap left or right side of screen to play',
     gameOver: 'Game Over!',
     youChopped: 'You chopped',
     piecesOfWood: 'pieces of wood!',
@@ -78,6 +80,7 @@ const translations: Record<Language, Translations> = {
     chopLeft: 'بریدن چپ',
     chopRight: 'بریدن راست',
     keyboardTip: 'نکته: برای بازی سریع‌تر از کلیدهای جهت‌دار استفاده کنید!',
+    tapToPlay: 'روی نیمه چپ یا راست صفحه بزنید',
     gameOver: 'بازی تمام شد!',
     youChopped: 'شما',
     piecesOfWood: 'تکه چوب بریدید!',
