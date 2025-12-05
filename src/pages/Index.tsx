@@ -3,7 +3,7 @@ import { GameCanvas } from '@/components/GameCanvas';
 import { GameOverDialog } from '@/components/GameOverDialog';
 import { Leaderboard } from '@/components/Leaderboard';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Play, Trophy, Palette, Languages } from 'lucide-react';
+import { Play, Trophy, Languages } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -52,48 +52,27 @@ const Index = () => {
               </div>
             </div>
           ) : (
-            <GameCanvas gameState={gameState} />
+            <div 
+              className="relative w-full max-w-[800px] aspect-[4/3] cursor-pointer"
+              onClick={(e) => {
+                if (gameState.isGameOver) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const isLeftSide = x < rect.width / 2;
+                moveTo(isLeftSide ? 'left' : 'right');
+                chop();
+              }}
+            >
+              <GameCanvas gameState={gameState} />
+            </div>
           )}
 
           {!gameState.isPaused && (
-            <>
-              <div className="bg-card px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg border-4 border-secondary">
-                <p className="text-2xl sm:text-3xl font-bold text-primary text-center">
-                  {t.score}: {gameState.score}
-                </p>
-              </div>
-
-              <div className="flex gap-3 sm:gap-4">
-                <Button
-                  onClick={() => {
-                    moveTo('left');
-                    chop();
-                  }}
-                  size="lg"
-                  className="text-base sm:text-xl px-4 sm:px-8 py-4 sm:py-6"
-                  disabled={gameState.isGameOver}
-                >
-                  <ArrowLeft className="mr-2" />
-                  {t.chopLeft}
-                </Button>
-                <Button
-                  onClick={() => {
-                    moveTo('right');
-                    chop();
-                  }}
-                  size="lg"
-                  className="text-base sm:text-xl px-4 sm:px-8 py-4 sm:py-6"
-                  disabled={gameState.isGameOver}
-                >
-                  {t.chopRight}
-                  <ArrowRight className="ml-2" />
-                </Button>
-              </div>
-
-              <p className="text-sm text-foreground/70 text-center px-4">
-                {t.keyboardTip}
+            <div className="bg-card px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg border-4 border-secondary">
+              <p className="text-2xl sm:text-3xl font-bold text-primary text-center">
+                {t.score}: {gameState.score}
               </p>
-            </>
+            </div>
           )}
         </div>
 
