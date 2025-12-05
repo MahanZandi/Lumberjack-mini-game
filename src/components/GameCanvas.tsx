@@ -38,7 +38,7 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
     // Draw tree trunk
     const treeX = width / 2;
     const treeWidth = 80;
-    const treeHeight = Math.min(gameState.treeHeight * 8, height - 100);
+    const treeHeight = gameState.treeHeight * 8;
     
     ctx.fillStyle = '#8B6239';
     ctx.fillRect(treeX - treeWidth / 2, height - 100 - treeHeight, treeWidth, treeHeight);
@@ -100,7 +100,7 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
     const playerX = gameState.playerSide === 'left' 
       ? treeX - treeWidth / 2 - 80 
       : treeX + treeWidth / 2 + 80;
-    const playerY = height - 100 - 60;
+    const playerY = height - 100 - 20;
 
     // Player body
     ctx.fillStyle = skinColors.body;
@@ -151,7 +151,7 @@ export const GameCanvas = ({ gameState }: GameCanvasProps) => {
       ref={canvasRef}
       width={800}
       height={600}
-      className="border-4 border-secondary rounded-lg shadow-2xl max-w-full"
+      className="border-4 border-secondary rounded-lg shadow-2xl max-w-full h-[70vh]"
     />
   );
 };
